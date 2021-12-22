@@ -9,25 +9,25 @@ pipeline {
     stage('Build') {
       steps {
         echo "Building the Code.........."
-        sh "mvn clean"
+        bat "mvn clean"
       }
     }
     stage('Test') {
       steps {
         echo "Testing the Code.........."
-        sh "mvn test"
+        bat "mvn test"
       }
     }
     stage('Compile') {
       steps {
         echo "Compiling the Project.........."
-        sh "mvn compile"
+        bat "mvn compile"
       }
     }
     stage('Package') {
       steps {
         echo "Packaging the project"
-        sh "mvn install"
+        bat "mvn install"
       }
     }
     stage('Building image') {
@@ -44,6 +44,11 @@ pipeline {
             dockerImage.push("$BUILD_NUMBER")
           }
         }
+      }
+    }
+    stage('Remove Unused docker image') {
+      steps {
+        bat "docker rmi $imagename:$BUILD_NUMBER"
       }
     }
   }
